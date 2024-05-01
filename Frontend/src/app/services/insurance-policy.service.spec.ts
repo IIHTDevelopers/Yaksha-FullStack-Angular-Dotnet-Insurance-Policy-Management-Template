@@ -38,31 +38,12 @@ describe('InsurancePolicyService', () => {
           customerId: 0
         }
       ];
-      service.getAllPolicies().subscribe((policies: any) => {
+      service.getAllPolicies().subscribe(policies => {
         expect(policies).toEqual(expectedPolicies);
       });
-      const req = httpTestingController.expectOne('http://127.0.0.1:8081/insurancepolicy/api/policies');
+      const req = httpTestingController.expectOne('your-backend-api-url/get-all-policies');
       expect(req.request.method).toEqual('GET');
       req.flush(expectedPolicies);
-    });
-
-    it('should get policy by ID', () => {
-      const testPolicy: InsurancePolicy = {
-        policyId: 1,
-        policyNumber: '',
-        policyType: '',
-        premiumAmount: 0,
-        startDate: new Date(),
-        endDate: new Date(),
-        isActive: false,
-        customerId: 0
-      };
-      service.getPolicyById(1).subscribe((policy: any) => {
-        expect(policy).toEqual(testPolicy);
-      });
-      const req = httpTestingController.expectOne('http://127.0.0.1:8081/insurancepolicy/api/policies/1');
-      expect(req.request.method).toEqual('GET');
-      req.flush(testPolicy);
     });
 
     it('should create a new policy', () => {
@@ -76,10 +57,10 @@ describe('InsurancePolicyService', () => {
         isActive: false,
         customerId: 0
       };
-      service.createPolicy(newPolicy).subscribe((policy: any) => {
+      service.createPolicy(newPolicy).subscribe(policy => {
         expect(policy).toEqual(newPolicy);
       });
-      const req = httpTestingController.expectOne('http://127.0.0.1:8081/insurancepolicy/api/policies');
+      const req = httpTestingController.expectOne('your-backend-api-url/create-policy');
       expect(req.request.method).toEqual('POST');
       req.flush(newPolicy);
     });
@@ -95,22 +76,24 @@ describe('InsurancePolicyService', () => {
         isActive: false,
         customerId: 0
       };
-      service.updatePolicy(updatedPolicy.policyId, updatedPolicy).subscribe((policy: any) => {
+      service.updatePolicy(updatedPolicy).subscribe(policy => {
         expect(policy).toEqual(updatedPolicy);
       });
-      const req = httpTestingController.expectOne(`http://127.0.0.1:8081/insurancepolicy/api/policies/${updatedPolicy.policyId}`);
+      const req = httpTestingController.expectOne('your-backend-api-url/update-policy');
       expect(req.request.method).toEqual('PUT');
       req.flush(updatedPolicy);
     });
 
     it('should delete a policy', () => {
       const policyId = 1;
-      service.deletePolicy(policyId).subscribe((response: any) => {
+      service.deletePolicy(policyId).subscribe(response => {
         expect(response).toBeUndefined();
       });
-      const req = httpTestingController.expectOne(`http://127.0.0.1:8081/insurancepolicy/api/policies/${policyId}`);
+      const req = httpTestingController.expectOne(`your-backend-api-url/delete-policy?id=${policyId}`);
       expect(req.request.method).toEqual('DELETE');
       req.flush({});
     });
   });
 });
+
+
